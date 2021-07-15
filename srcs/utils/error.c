@@ -1,31 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strcmp.c                                        :+:      :+:    :+:   */
+/*   error.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jaekpark <jaekpark@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: jaekpark <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/05/07 18:47:35 by jaekpark          #+#    #+#             */
-/*   Updated: 2021/07/13 20:39:47 by parkjaekw        ###   ########.fr       */
+/*   Created: 2021/06/29 14:53:13 by jaekpark          #+#    #+#             */
+/*   Updated: 2021/07/15 20:12:34 by parkjaekw        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "../../includes/minishell.h"
 
-int		ft_strcmp(char *s1, char *s2)
+extern t_conf g_sh;
+
+void	print_error(char *msg)
 {
-	size_t i;
-
-	i = 0;
-	if (!s1 || !s2)
-		return (-1);
-	if (ft_strlen(s1) != ft_strlen(s2))
-		return (-2);
-	while (i < ft_strlen(s1))
-	{
-		if (s1[i] != s2[i])
-			return (-3);
-		i++;
-	}
-	return (0);
+	ft_putstr_fd(msg, 2);
+	ft_putstr_fd("\n", 2);
 }
+
+void	exit_shell(int num)
+{
+	free(g_sh.cmd);
+	printf("exit\n");
+	exit(num);
+}
+

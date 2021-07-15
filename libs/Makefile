@@ -45,9 +45,9 @@ all:			$(NAME)
 debug:			$(NAME_DEBUG)
 
 $(NAME):		$(OBJS_DIR) $(OBJS_FILE)
-				@echo $(CYAN) " - Compiling $@ "$(EOC)
+				@echo $(CYAN) "`date +%y/%m/%d_%H:%M:%S`:: Compiling $@ "$(EOC)
 				@$(AR) libft.a $(OBJS_FILE)
-				@echo $(GREEN) " - OK"$(EOC)
+				@echo $(GREEN) "`date +%y/%m/%d_%H:%M:%S`:: OK"$(EOC)
 
 $(OBJS_DIR) :
 					@mkdir -p $(OBJS_DIR)	
@@ -56,9 +56,9 @@ $(OBJS_DIR)%.o :	$(SRCS_DIR)%.c
 					@$(CC) -c $(CFLAGS) $(HEADER_FLAG) $< -o $@
 
 $(NAME_DEBUG):	$(DEBUG_OBJS_DIR) $(DEBUG_OBJS_FILE)
-				@echo $(CYAN) " - Compiling $@" $(EOC)
+				@echo $(CYAN) "`date +%y/%m/%d_%H:%M:%S`:: Compiling $@" $(EOC)
 				@$(AR) $(NAME_DEBUG) $(DEBUG_OBJS_FILE)
-				@echo $(GREEN) " - OK"$(EOC)
+				@echo $(GREEN) "`date +%y/%m/%d_%H:%M:%S`:: OK"$(EOC)
 
 $(DEBUG_OBJS_DIR) :
 				@mkdir -p $(DEBUG_OBJS_DIR)
@@ -67,18 +67,18 @@ $(DEBUG_OBJS_DIR)%.o :	$(SRCS_DIR)%.c
 				@$(CC) -c $(DEBUG_FLAGS) $(HEADER_FLAG) $< -o $@
 
 norm:			
-				@echo $(CYAN) " - Libft norm check" $(EOC)
+				@echo $(CYAN) "`date +%y/%m/%d_%H:%M:%S`:: Libft norm check" $(EOC)
 				@norminette $(SRCS_FILE) $(INCS_FILE)
 
 clean:
-				@echo $(CYAN) " - clean libft" $(EOC)
+				@echo $(CYAN) "`date +%y/%m/%d_%H:%M:%S`:: clean libft" $(EOC)
 				@$(RM) $(OBJS_FILE) $(DEBUG_OBJS_FILE)
-				@echo $(GREEN) " - OK" $(EOC)
+				@echo $(GREEN) "`date +%y/%m/%d_%H:%M:%S`:: OK" $(EOC)
 
 fclean:			
-				@echo $(CYAN) " - fclean libft" $(EOC)
+				@echo $(CYAN) "`date +%y/%m/%d_%H:%M:%S`:: fclean libft" $(EOC)
 				@$(RM) $(NAME_DEBUG) $(NAME) $(OBJS_DIR) $(DEBUG_OBJS_DIR)
-				@echo $(GREEN) " - OK"$(EOC)
+				@echo $(GREEN) "`date +%y/%m/%d_%H:%M:%S`:: OK"$(EOC)
 
 re:				fclean $(NAME)
 

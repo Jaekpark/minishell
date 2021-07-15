@@ -1,28 +1,67 @@
-#Input header file name
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    Makefile                                           :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: parkjaekwang <marvin@42.fr>                +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2021/07/13 16:39:04 by parkjaekw         #+#    #+#              #
+#    Updated: 2021/07/15 14:43:16 by parkjaekw        ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
+
+
+#	INTRA_ID 	:	Input your intra ID.
+#	INCS		:	Header files.
+#	J_SRCS		:	Jaekpark's source files.
+#	Y_SRCS		:	Yeslee's source files.
+#	SRCS_DIR	:	Directory where source files are stored.
+#	OBJS_DIR	:	Directory where object files will be stored.
+#	INCS_DIR	:	Directory where header files are stored.
+#	SRCS_FILE	:	Source files including directory path.
+#	OBJS_FILE	:	Object files including directory path.
+#	INCS_FILE	:	Header files including directory path.
+#	
+#	LIBFT		:	Own Library file name with path.
+#	LIBFT_DIR	:	Directory where libft
+#	LIBFT_INCS	:	Directory where libft's header file.
+#
+#	Cluster Readline
+#	READLINE		=	 /Users/$(INTRA_ID)/.brew/opt/readline
+# 	M1 mac Readline
+# 	READLINE		=	/opt/homebrew/Cellar/readline/8.1
+
+#	File settings
+INTRA_ID			=	jaekpark
+READLINE			=	/opt/homebrew/Cellar/readline/8.1
 INCS				=	minishell.h
-#Input source files name
-SRCS				=	main.c error.c ft_utils.c init.c make_struct.c free.c
-OBJS				=	$(patsubst %.c, %.o, $(SRCS))
+J_SRCS				=	main.c utils/error.c utils/ft_utils.c utils/init.c \
+						utils/make_struct.c utils/free.c parse/lexer.c parse/tokenizer.c \
+						utils/print.c setup/set.c parse/parser.c
+Y_SRCS				=	
+SRCS				=	$(Y_SRCS) $(J_SRCS)
+OBJS				= 	$(patsubst %.c, %.o, $(SRCS_FILE))
+SRCS_DIR			=	./srcs/
+OBJS_DIR			=	./objs/
+INCS_DIR			=	./includes/
 
-SRCS_DIR		=	./srcs/
-OBJS_DIR		=	./objs/
-INCS_DIR		=	./includes/
+SRCS_FILE			=	$(addprefix $(SRCS_DIR), $(SRCS))
+OBJS_FILE			= 	$(addprefix $(OBJS_DIR), $(notdir $(OBJS)))
+INCS_FILE			= 	$(addprefix $(INCS_DIR), $(INCS))
 
-SRCS_FILE		=	$(addprefix $(SRCS_DIR), $(SRCS))
-OBJS_FILE		=	$(addprefix $(OBJS_DIR), $(OBJS))
-INCS_FILE		= 	$(addprefix $(INCS_DIR), $(INCS))
+LIBFT				=	./libs/libft.a
+LIBFT_DIR			=	./libs
+LIBFT_INCS			=	./libs/includes/libft.h
 
-LIBFT			=	./libs/libft.a
-LIBFT_DIR		=	./libs
-LIBFT_INCS		=	./libs/includes/libft.h
+#	Compile settings
+CC					=	gcc
+RM					=	rm -rf
+CFLAGS				=	-Wall -Wextra -Werror
+HEADER_FLAG			=	-I$(INCS_DIR) -I$(LIBFT_INCS) -I$(READLINE)/include
+LIB_FLAG			= 	-L$(LIBFT_DIR) -lft -L$(READLINE)/lib -lreadline -lncurses
+NAME				=	minishell
 
-CC				=	gcc
-RM				=	rm -rf
-CFLAGS			=	-Wall -Wextra -Werror -fsanitize=address
-HEADER_FLAG		=	-I$(INCS_DIR) -I$(LIBFT_INCS) -I/Users/jaekpark/.brew/opt/readline/include
-LIB_FLAG		=	-lft -L$(LIBFT_DIR) -L/Users/jaekpark/.brew/opt/readline/lib -lreadline -lncurses
-NAME			=	minishell
-
+#	Color settings
 BLACK			=	"\033[1;30m"
 RED				=	"\033[1;31m"
 GREEN			=	"\033[1;32m"
@@ -33,45 +72,48 @@ PURPLE			=	"\033[1;36m"
 WHITE			=	"\033[1;37m"
 EOC				=	"\033[0;0m"
 
+.c.o			:
+					@clear
+					@echo $(BLUE)
+					$(CC) $(CFLAGS) $(HEADER_FLAG) -c $< -o $(addprefix $(OBJS_DIR), $(notdir $@))
+					@echo $(EOC)
 
-all:			$(NAME)
+all				:	$(NAME)
 
-$(LIBFT):
-				@make -C ./libs
+$(LIBFT)		:
+					@make -C ./libs
 
-$(NAME):		$(LIBFT) $(OBJS_DIR) $(OBJS_FILE)
-				@echo $(YELLOW) " - Compiling $@"
-				@$(CC) $(CFLAGS) $(LIB_FLAG) $(HEADER_FLAG) $(OBJS_FILE) -o $@
-				@echo $(GREEN) " - OK" $(EOC)
+$(NAME)			:	$(LIBFT) $(OBJS_DIR) $(OBJS)
+					@clear
+					@echo $(GREEN)
+					$(CC) $(CFLAGS) $(LIB_FLAG) $(HEADER_FLAG) $(OBJS_FILE) -o $@
+					@echo $(EOC)
+					@echo $(YELLOW) "`date +%y/%m/%d_%H:%M:%S`:: Compiling $@"
+					@echo $(GREEN) "`date +%y/%m/%d_%H:%M:%S`:: OK" $(EOC)
 
-$(OBJS_DIR) :
+$(OBJS_DIR)		:
 					@mkdir -p $(OBJS_DIR)
 
-$(OBJS_DIR)%.o :	$(SRCS_DIR)%.c $(INCS_FILE)
-					@$(CC) -c $(CFLAGS) $(HEADER_FLAG) $< -o $@
+norm			:	$(SRCS_FILE) $(INCS_FILE)
+					@echo $(CYAN) "`date +%y/%m/%d_%H:%M:%S`:: minishell norm check"$(EOC)
+					@norminette $(SRCS_FILE) $(INCS_FILE)
+					@make norm -C $(LIBFT_DIR)
 
-norm:			$(SRCS_FILE) $(INCS_FILE)
-				@echo $(CYAN) " - minishell norm check"$(EOC)
-				@norminette $(SRCS_FILE) $(INCS_FILE)
-				@make norm -C $(LIBFT_DIR)
+leaks			:
+	 				@osascript -e 'tell app "Terminal" to do script "while true; do leaks minishell; sleep 2; clear; done"'
 
-# leaks:
-# 	@osascript -e 'tell app "Terminal" to do script "while true; do leaks push_swap; sleep 2; clear; done"'
-# 	@osascript -e 'tell app "Terminal" to do script "while true; do leaks checker; sleep 2; clear; done"'
-# 	@./utils/leaks.sh
+clean			:
+					@make clean -C $(LIBFT_DIR)
+					@echo $(YELLOW) "`date +%y/%m/%d_%H:%M:%S`:: clean minishell" $(EOC)
+					@$(RM) $(OBJS_FILE) 
+					@echo $(GREEN) "`date +%y/%m/%d_%H:%M:%S`:: OK" $(EOC)
 
-clean:
-				@make clean -C $(LIBFT_DIR)
-				@echo $(YELLOW) " - clean push_swap" $(EOC)
-				@$(RM) $(OBJS_FILE) 
-				@echo $(GREEN) " - OK" $(EOC)
+fclean			:
+					@make fclean -C $(LIBFT_DIR)
+					@echo $(YELLOW) "`date +%y/%m/%d_%H:%M:%S`:: fclean minishell" $(EOC)
+					@$(RM) $(NAME) $(OBJS_DIR) 
+					@echo $(GREEN) "`date +%y/%m/%d_%H:%M:%S`:: OK" $(EOC)
 
-fclean:
-				@make fclean -C $(LIBFT_DIR)
-				@echo $(YELLOW) " - fclean minitalk" $(EOC)
-				@$(RM) $(NAME) $(OBJS_DIR) 
-				@echo $(GREEN) " - OK" $(EOC)
+re				:	fclean $(NAME)
 
-re:				fclean $(NAME) $(CLIENT)
-
-.PHONY:			all clean fclean re norm
+.PHONY:			all clean fclean re norm leaks
