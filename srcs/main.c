@@ -6,7 +6,7 @@
 /*   By: jaekpark <jaekpark@student.42seoul.fr      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/02 20:30:39 by jaekpark          #+#    #+#             */
-/*   Updated: 2021/07/15 20:14:23 by parkjaekw        ###   ########.fr       */
+/*   Updated: 2021/12/22 23:35:41 by parkjaekw        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,4 +32,5 @@ int		main(int ac, char **av, char **envp)
 		set_process();
 		free_conf(&g_sh);
 	}
+	return (0);
 }
