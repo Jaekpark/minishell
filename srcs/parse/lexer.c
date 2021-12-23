@@ -6,7 +6,7 @@
 /*   By: jaekpark <jaekpark@student.42seoul.fr      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/04 18:17:44 by jaekpark          #+#    #+#             */
-/*   Updated: 2021/07/15 12:31:03 by parkjaekw        ###   ########.fr       */
+/*   Updated: 2021/12/23 23:32:30 by parkjaekw        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,8 @@ static void	analyze_operator(char *lex, int ret, int *i)
 	}
 	else if (ret > 0)
 		lex[*i] = 'i';
+	else
+		return ;
 }
 
 void		lexer(char *cmd)
